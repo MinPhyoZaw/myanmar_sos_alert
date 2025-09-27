@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FaUserCircle, FaUserFriends, FaPlus, FaEdit, FaEye, FaCog, FaTimes } from "react-icons/fa";
+import { FaUserCircle,FaTrash, FaUserFriends, FaPlus, FaEdit, FaEye, FaCog, FaTimes, FaUsers, FaHandsHelping, FaShieldAlt, FaHeart, FaGlobe, FaStar, FaCamera } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaUserFriends, FaPlus, FaEdit, FaEye, FaTimes, FaUserCircle, FaCog, FaUsers, FaHandsHelping, FaShieldAlt, FaHeart, FaGlobe, FaStar } from "react-icons/fa";
-import {  BsThreeDotsVertical } from "react-icons/bs";
 import { auth, db } from "./firebase";
 import {
   createUserWithEmailAndPassword,
@@ -10,7 +8,7 @@ import {
   onAuthStateChanged,
   signOut
 } from "firebase/auth";
-import { collection, addDoc, doc, setDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, getDocs, updateDoc } from "firebase/firestore";
 import Navbar from "./components/Navbar";
 import MenuDrawer from "./components/MenuDrawer";
 import AuthModal from "./components/AuthModal";
@@ -30,6 +28,9 @@ function App() {
   const [navbarMenuOpen, setNavbarMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Profile image state
+  const [profileImage, setProfileImage] = useState(null);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   // Auth state
   const [authModal, setAuthModal] = useState(false);
@@ -56,12 +57,18 @@ function App() {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setCurrentUser(user);
+        // Load profile image from localStorage
+        const savedImage = localStorage.getItem(`profileImage_${user.uid}`);
+        if (savedImage) {
+          setProfileImage(savedImage);
+        }
         // Load contacts for this user
         const snap = await getDocs(collection(db, "users", user.uid, "contacts"));
         const list = snap.docs.map((d) => d.data());
         setContacts(list);
       } else {
         setCurrentUser(null);
+        setProfileImage(null);
         setContacts([]);
       }
     });
@@ -98,6 +105,30 @@ function App() {
     localStorage.setItem("sosTrigger", sosTrigger);
   }, [sosTrigger]);
 
+  // Handle profile image upload
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file && currentUser) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageData = e.target.result;
+        setProfileImage(imageData);
+        // Save to localStorage
+        localStorage.setItem(`profileImage_${currentUser.uid}`, imageData);
+        setShowImageUpload(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Remove profile image
+  const removeProfileImage = () => {
+    if (currentUser) {
+      setProfileImage(null);
+      localStorage.removeItem(`profileImage_${currentUser.uid}`);
+      setShowImageUpload(false);
+    }
+  };
   // Add contact
   const handleAddContact = async () => {
     if (!name || !phone || !currentUser) return;
@@ -329,6 +360,7 @@ function App() {
       <Navbar
         currentUser={currentUser}
         onMenuClick={() => setNavbarMenuOpen(true)}
+        profileImage={profileImage}
       />
 
       {/* Menu Drawer */}
@@ -341,6 +373,8 @@ function App() {
         setModal={setModal}
         setSettingsOpen={setSettingsOpen}
         handleLogout={handleLogout}
+        profileImage={profileImage}
+        setShowImageUpload={setShowImageUpload}
       />
 
       {/* Settings Slide-in Panel */}
@@ -404,6 +438,53 @@ function App() {
         handleSignup={handleSignup}
       />
 
+      {/* Image Upload Modal */}
+      {showImageUpload && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="relative bg-[#000B58] rounded-lg shadow-2xl border-2 border-white p-6 w-80">
+            <button
+              onClick={() => setShowImageUpload(false)}
+              className="absolute top-4 right-6 text-white hover:text-red-500"
+            >
+              <FaTimes />
+            </button>
+            <h2 className="text-xl font-bold mb-4 text-white font-mono">Profile Picture</h2>
+            
+            {profileImage && (
+              <div className="flex justify-center mb-4">
+                <img
+                  src={profileImage}
+                  alt="Current Profile"
+                  className="w-24 h-24 rounded-full object-cover border-2 border-white"
+                />
+              </div>
+            )}
+            
+            <div className="flex flex-col gap-3">
+              <label className="w-full bg-cyan-500 text-white py-2 px-4 rounded font-mono text-center cursor-pointer hover:bg-cyan-600 transition">
+                <FaCamera className="inline mr-2" />
+                Choose Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+              
+              {profileImage && (
+                <button
+                  onClick={removeProfileImage}
+                  className="w-full bg-red-500 text-white py-2 px-4 rounded font-mono hover:bg-red-600 transition"
+                >
+                  <FaTrash className="inline mr-2" />
+                  Remove Image
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       {/* Animations */}
       <style>{`
         .animate-fade-in {

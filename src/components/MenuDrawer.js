@@ -1,5 +1,5 @@
 import React from "react";
-import { FaUserCircle, FaUserFriends, FaPlus, FaCog, FaTimes, FaEnvelope } from "react-icons/fa";
+import { FaUserCircle, FaUserFriends, FaPlus, FaCog, FaTimes, FaEnvelope, FaCamera, FaTrash } from "react-icons/fa";
 
 function MenuDrawer({
   open,
@@ -9,7 +9,9 @@ function MenuDrawer({
   setAuthMode,
   setModal,
   setSettingsOpen,
-  handleLogout
+  handleLogout,
+  profileImage,
+  setShowImageUpload
 }) {
   if (!open) return null;
   return (
@@ -30,6 +32,29 @@ function MenuDrawer({
           {/* Show user info as separate buttons if logged in */}
           {currentUser && (
             <div className="flex flex-col gap-2 mb-2">
+              {/* Profile Image Section */}
+              <div className="flex flex-col items-center gap-2 mb-4">
+                <div className="relative">
+                  {profileImage ? (
+                    <img
+                      src={profileImage}
+                      alt="Profile"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-white"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center border-2 border-white">
+                      <FaUserCircle className="text-gray-600" size={40} />
+                    </div>
+                  )}
+                  <button
+                    onClick={() => setShowImageUpload(true)}
+                    className="absolute -bottom-1 -right-1 w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center hover:bg-cyan-600 transition"
+                  >
+                    <FaCamera className="text-white" size={12} />
+                  </button>
+                </div>
+              </div>
+
               <button
                 className="flex items-center gap-3 px-4 py-3 border  rounded-full bg-white  transition font-mono text-white shadow-md hover:shadow-cyan-400/40"
                 style={{ cursor: "default" }}
