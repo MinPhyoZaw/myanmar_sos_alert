@@ -44,7 +44,7 @@ function SOSButton({ contacts }) {
     <div className="flex justify-center mt-4">
       <button
         onClick={handleSOS}
-        className="w-40 h-40 bg-red-600 text-white rounded-full shadow-2xl animate-pulse hover:bg-red-700 active:scale-95 transition duration-200"
+        className="w-40 h-40 bg-yellow-600 text-white rounded-full shadow-2xl animate-pulse hover:bg-red-700 active:scale-95 transition duration-200"
       >
         SOS
       </button>
