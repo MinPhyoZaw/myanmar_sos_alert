@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaUserFriends, FaPlus, FaEdit, FaEye, FaTimes, FaUserCircle, FaCog } from "react-icons/fa";
+import { FaUserFriends, FaPlus, FaEdit, FaEye, FaTimes, FaUserCircle, FaCog, FaUsers, FaHandsHelping, FaShieldAlt, FaHeart, FaGlobe, FaStar } from "react-icons/fa";
 import {  BsThreeDotsVertical } from "react-icons/bs";
 import { auth, db } from "./firebase";
 import {
@@ -264,10 +264,33 @@ function App() {
           />
         ))}
       </div>
+      
+      {/* Community Icons floating around */}
+      <div className="absolute inset-0 z-5 pointer-events-none">
+        <FaUsers className="absolute top-20 left-10 text-cyan-400 opacity-60 animate-bounce" size={32} style={{ animationDelay: '0s', animationDuration: '3s' }} />
+        <FaHandsHelping className="absolute top-32 right-16 text-purple-400 opacity-50 animate-bounce" size={28} style={{ animationDelay: '1s', animationDuration: '4s' }} />
+        <FaShieldAlt className="absolute bottom-40 left-20 text-green-400 opacity-70 animate-bounce" size={30} style={{ animationDelay: '2s', animationDuration: '3.5s' }} />
+        <FaHeart className="absolute top-1/3 left-1/4 text-red-400 opacity-60 animate-pulse" size={24} style={{ animationDelay: '0.5s' }} />
+        <FaGlobe className="absolute bottom-32 right-12 text-blue-400 opacity-50 animate-bounce" size={26} style={{ animationDelay: '1.5s', animationDuration: '4.5s' }} />
+        <FaStar className="absolute top-1/4 right-1/3 text-yellow-400 opacity-70 animate-pulse" size={22} style={{ animationDelay: '2.5s' }} />
+        <FaUserFriends className="absolute bottom-1/3 left-1/3 text-indigo-400 opacity-60 animate-bounce" size={28} style={{ animationDelay: '3s', animationDuration: '3.8s' }} />
+        <FaUsers className="absolute top-1/2 right-20 text-pink-400 opacity-50 animate-pulse" size={25} style={{ animationDelay: '1.8s' }} />
+      </div>
+      
       <div className="relative z-10 flex flex-col items-center">
-        <span className="text-4xl md:text-6xl font-bold text-white font-mono drop-shadow-lg tracking-widest">
+        <div className="flex items-center gap-4 mb-4">
+          <FaShieldAlt className="text-cyan-400 drop-shadow-glow animate-pulse" size={48} />
+          <FaUsers className="text-purple-400 drop-shadow-glow animate-pulse" size={40} style={{ animationDelay: '0.5s' }} />
+          <FaHeart className="text-red-400 drop-shadow-glow animate-pulse" size={44} style={{ animationDelay: '1s' }} />
+        </div>
+        <span className="text-4xl md:text-6xl font-bold text-white font-mono drop-shadow-lg tracking-widest mb-4">
           SAFETY STEP
         </span>
+        <div className="flex items-center gap-3 text-cyan-300 font-mono text-lg opacity-80">
+          <FaHandsHelping className="animate-pulse" size={20} />
+          <span>Community • Safety • Together</span>
+          <FaGlobe className="animate-pulse" size={20} style={{ animationDelay: '1s' }} />
+        </div>
       </div>
       <style>{`
         .splash-star {
