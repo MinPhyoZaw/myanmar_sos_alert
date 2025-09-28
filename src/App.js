@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FaUserCircle, FaUserFriends, FaPlus, FaEdit, FaEye, FaCog, FaTimes } from "react-icons/fa";
+import { FaUserCircle, FaUserFriends, FaPlus, FaEdit, FaEye, FaCog, FaTimes, FaUsers, FaHandsHelping, FaShieldAlt, FaHeart, FaGlobe, FaStar } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaUserFriends, FaPlus, FaEdit, FaEye, FaTimes, FaUserCircle, FaCog, FaUsers, FaHandsHelping, FaShieldAlt, FaHeart, FaGlobe, FaStar } from "react-icons/fa";
-import {  BsThreeDotsVertical } from "react-icons/bs";
 import { auth, db } from "./firebase";
 import {
   createUserWithEmailAndPassword,
