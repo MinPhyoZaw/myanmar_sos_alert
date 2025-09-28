@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaUserCircle, FaUserFriends, FaPlus, FaEdit, FaEye, FaCog, FaTimes, FaUsers, FaHandsHelping, FaShieldAlt, FaHeart, FaGlobe, FaStar, FaCamera } from "react-icons/fa";
+import { FaUserCircle,FaTrash, FaUserFriends, FaPlus, FaEdit, FaEye, FaCog, FaTimes, FaUsers, FaHandsHelping, FaShieldAlt, FaHeart, FaGlobe, FaStar, FaCamera } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { auth, db } from "./firebase";
 import {
